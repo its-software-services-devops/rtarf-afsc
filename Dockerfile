@@ -1,1 +1,1 @@
-FROM krys/echo-server
+FROM dockerbogo/docker-nginx-hello-world
