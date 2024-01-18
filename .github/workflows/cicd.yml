@@ -39,6 +39,9 @@ jobs:
       with:
         service: 'web-form'
         image: 'asia-southeast1-docker.pkg.dev/its-artifact-commons/rtarf/web-form:${{ needs.build1.outputs.imageTag }}'
+        flags: '--region asia-southeast1'
+        env_vars: |
+          PORT=3000
 
     - name: Slack notification end
       if: always()
