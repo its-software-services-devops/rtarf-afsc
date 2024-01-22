@@ -2,6 +2,7 @@
 import { useQuasar } from 'quasar';
 import type { QBtnProps, QNotifyOptions } from 'quasar'
 import moment from 'moment';
+// import { useGoogleFonts } from "@nuxtjs/google-fonts";
 
 
 const { dialog, fullscreen, bottomSheet, loading, loadingBar, notify, dark } = useQuasar()

@@ -64,6 +64,7 @@ function setUsername() {
   if (local_username) {
     username.value = local_username
     initUsername.value = true
+    console.log(local_username)
     console.log('username set !')
   } else {
     console.log('username not set')
@@ -91,7 +92,7 @@ onMounted(() => {
         /> -->
 
         <q-toolbar-title>
-          Hotel Information App
+          จดหมายข่าว || ศูนย์รักษาความปลอดภัยแห่งชาติ
         </q-toolbar-title>
 
         <!-- <div>Quasar v{{ $q.version }}</div> -->

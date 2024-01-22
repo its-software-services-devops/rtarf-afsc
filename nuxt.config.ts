@@ -7,14 +7,20 @@ export default defineNuxtConfig({
     'nuxt-quasar-ui',
     '@nuxtjs/google-fonts'
   ],
-  googleFonts: {
-    families: {
-      // Specify the font and its styles
-      'Noto+Sans+Thai': [100, 300, 400, 500, 700, 900],
-    },
-    display: 'swap', // Optional: Use 'swap' to enable font-display: swap
-  },
-
+  
+  // googleFonts: {
+  //   families: {
+  //     // Specify the font and its styles
+  //     'Noto+Sans+Thai': [100, 300, 400, 500, 700, 900],
+  //   },
+  //   display: 'swap', // Optional: Use 'swap' to enable font-display: swap
+  // },
+  // googleFonts: {
+  //   families: {
+  //     // 'Noto+Sans+Thai':true,
+  //     'Noto+Sans+Thai': [100, 300, 400, 500, 700, 900],display: 'swap'
+  //   }
+  // },
   runtimeConfig: {
     public: {
       baseURL: process.env.NUXT_PUBLIC_API_BASE || 'https://api.example.com/',
@@ -32,7 +38,8 @@ export default defineNuxtConfig({
     // ...
     // 'quasar/fonts',
     // Reference the global CSS file
-    './assets/global.css',
+    // './assets/global.css',
+
 
     'quasar/animations',
     'quasar/icons',
@@ -44,6 +51,7 @@ export default defineNuxtConfig({
     // brand: {
     //   primary: '#fff000',
     // },
+    sassVariables: 'assets/quasar-variables.sass',
     plugins: [
       'AppFullscreen',
       'BottomSheet',
@@ -64,7 +72,7 @@ export default defineNuxtConfig({
     config: {
       dark: true,
       brand: {
-        primary: '#a73c24',
+        // primary: '#a73c24',
       },
     },
     components: {

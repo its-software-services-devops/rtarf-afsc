@@ -21,9 +21,9 @@
                                                 (val && val.length > 0) || 'Please type Password',
                                         ]" />
 
-                                    <div>
-                                        <q-btn label="Login" type="submit" color="primary" />
-                                        <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+                                    <div class="row space-between">
+                                        <q-btn label="เข้าสู่ระบบ" type="submit" color="primary" />
+                                        <q-btn label="ล้างข้อมูล" type="reset" color="primary" flat class="q-ml-sm" />
                                     </div>
                                 </q-form>
                             </div>
@@ -43,25 +43,37 @@ const password = ref(null)
 
 async function onSubmit() {
     const config = useRuntimeConfig();
-    let url = config.public.baseURL + '/auth/login'
-    let result = await useFetch(url, {
-        method: 'post',
-        body: {
-            username: username,
-            password: password
-        }
-    })
-    console.log(result)
-    if (result.status = "success") {
+    // let url = config.public.baseURL + '/auth/login'
+    // let result = await useFetch(url, {
+    //     method: 'post',
+    //     body: {
+    //         username: username,
+    //         password: password
+    //     }
+    // })
+
+    // console.log(result)
+    // if (result.status = "success") {
+    //     let currentUrl = new URL(window.location)
+    //     setStorage(result.data.value)
+    //     location.replace(currentUrl.origin)
+    // }
+    // console.log(username)
+    // console.log(password)
+    if (username.value === 'admin' && password.value === 'admin123') {
+
         let currentUrl = new URL(window.location)
-        setStorage(result.data.value)
+
+        setStorage({ username: username.value })
         location.replace(currentUrl.origin)
+
+        // console.log("click submit");
     }
-    console.log("click submit");
 }
 function setStorage(value) {
 
     let userProfile = JSON.stringify(value)
+    console.log(userProfile)
     localStorage.setItem('UserProfile', userProfile)
 
     // let userProfileJson = JSON.parse(localStorage.getItem('UserProfile'))

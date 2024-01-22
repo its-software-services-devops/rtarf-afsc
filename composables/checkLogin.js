@@ -1,5 +1,5 @@
 let username = ''
-let auth_key = ''
+// let auth_key = ''
 
 export const useCheckLogin = () => {
     let currentUrl = new URL(window.location)
@@ -21,10 +21,10 @@ export const useCheckLogin = () => {
 
         } catch (error) {
             localStorage.removeItem('UserProfile')
-            location.replace(currentUrl.origin + "/login")
+            location.replace(currentUrl.origin + "/login") 
         }
         username = jsonInfo.username
-        auth_key = jsonInfo.auth_key
+        // auth_key = jsonInfo.auth_key
 
         if (currentUrl.pathname === '/login') {
 
