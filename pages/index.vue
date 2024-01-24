@@ -16,6 +16,8 @@ loadingBar.setDefaults({
 const province_option = [
   'ขอนแก่น', 'อุดรธานี', 'นครราชสีมา', 'สกลนคร', 'ชัยภูมิ', 'นครพนม', 'กาฬสินธุ์', 'เลย', 'ร้อยเอ็ด', 'หนองคาย'
 ]
+
+const textEdit = ref('')
 // 1. traveloka.com
 // 2. trip.com
 // 3. booking.com
@@ -78,7 +80,7 @@ const initialPagination = {
   rowsPerPage: 10
   // rowsNumber: xx if getting data from a server
 }
-function clickVisible(){
+function clickVisible() {
   console.log(visibleColumns.value)
 }
 
@@ -194,6 +196,29 @@ function checkTotalRoom(total_room: Number) {
   }
   return total_room
 }
+function onRejected(rejectedEntries) {
+  // Notify plugin needs to be installed
+  // https://quasar.dev/quasar-plugins/notify#Installation
+  try {
+    console.log()
+  } catch (error) {
+
+  }
+  $q.notify({
+    type: 'negative',
+    message: `${rejectedEntries.length} file(s) did not pass validation constraints`
+  })
+}
+
+// return { onRejected }
+
+
+function pasteCapture(event) {
+  console.log(event)
+}
+function dropCapture(event) {
+  console.log(event)
+}
 
 async function searchByProvince() {
   console.log(province_name.value)
@@ -249,9 +274,15 @@ onMounted(() => {
 <template>
   <!-- <q-btn @click="clickVisible">asda</q-btn> -->
   <q-page class="q-pa-lg">
-    <div class="q-pa-md example-col-gutter-horizontal">
+    <div>
+      <h4 class="q-pa-sm q-ma-sm text-center">เพิ่มจดหมายข่าว</h4>
+    </div>
+
+    <div class="q-pa-md example-col-gutter-horizontal q-gutter-x-xs q-gutter-y-lg">
+
       <div class="row q-col-gutter-x-md">
-        <q-input class="col-3" filled v-model="dateFilter" label="วันที่( ปี-เดือน-วัน )">
+        <q-input outlined dense class="col-9" label="หัวข้อ"></q-input>
+        <q-input class="col-3" dense outlined v-model="dateFilter" label="วันที่( วัน-เดือน-ปี )">
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -265,86 +296,153 @@ onMounted(() => {
           </template>
         </q-input>
 
+        <!-- 
         <q-select class="col-3" filled emit-value map-options transition-show="jump-up" transition-hide="jump-up"
           v-model="site_name" :options="site_name_options" label="เว็บไซต์" />
 
         <q-select class="col-3" filled transition-show="jump-up" transition-hide="jump-up" v-model="province_name"
-          :options="province_option" label="เลือกจังหวัด" />
+          :options="province_option" label="เลือกจังหวัด" /> -->
 
-        <q-btn class="col-2 q-ml-lg" color="primary" @click="searchByProvince">ค้นหา</q-btn>
+        <!-- <q-btn class="col-2 q-ml-lg" color="primary" @click="searchByProvince">ค้นหา</q-btn>  -->
+      </div>
+      <div class="q-gutter-sm">
+        <q-editor v-model="textEdit" @paste.native="evt => pasteCapture(evt)" @drop.native="evt => dropCapture(evt)"
+          :dense="$q.screen.lt.md" :toolbar="[
+            [
+              {
+                label: $q.lang.editor.align,
+                icon: $q.iconSet.editor.align,
+                fixedLabel: true,
+                list: 'only-icons',
+                options: ['left', 'center', 'right', 'justify']
+              },
+              {
+                label: $q.lang.editor.align,
+                icon: $q.iconSet.editor.align,
+                fixedLabel: true,
+                options: ['left', 'center', 'right', 'justify']
+              }
+            ],
+            ['bold', 'italic', 'strike', 'underline', 'subscript', 'superscript'],
+            ['token', 'hr', 'link', 'custom_btn'],
+            [
+              {
+                label: $q.lang.editor.formatting,
+                icon: $q.iconSet.editor.formatting,
+                list: 'no-icons',
+                options: [
+
+                  'h1',
+                  'h2',
+                  'h3',
+                  'h4',
+                  'h5',
+                  'h6',
+                  'p',
+                ]
+              },
+              {
+                label: $q.lang.editor.fontSize,
+                icon: $q.iconSet.editor.fontSize,
+                fixedLabel: true,
+                fixedIcon: true,
+                list: 'no-icons',
+                options: [
+                  'size-1',
+                  'size-2',
+                  'size-3',
+                  'size-4',
+                  'size-5',
+                  'size-6',
+                  'size-7'
+                ]
+              },
+              {
+                label: $q.lang.editor.defaultFont,
+                icon: $q.iconSet.editor.font,
+                fixedIcon: true,
+                list: 'no-icons',
+                options: [
+                  'default_font',
+                  'arial',
+                  'arial_black',
+                  'comic_sans',
+                  'courier_new',
+                  'impact',
+                  'lucida_grande',
+                  'times_new_roman',
+                  'verdana'
+                ]
+              },
+
+            ],
+            ['quote', 'unordered', 'ordered'],
+
+            ['undo', 'redo'],
+            // ['viewsource']
+          ]" :fonts="{
+  arial: 'Arial',
+  arial_black: 'Arial Black',
+  comic_sans: 'Comic Sans MS',
+  courier_new: 'Courier New',
+  impact: 'Impact',
+  lucida_grande: 'Lucida Grande',
+  times_new_roman: 'Times New Roman',
+  verdana: 'Verdana'
+}" />
+      </div>
+      <div class="row q-col-gutter-x-md">
+
+        <div class="col-6">
+          <div class="column justify-around" style="height: 100%">
+            <div class="col-4 justify-start">
+              <q-input outlined dense label="ขื่อ Tag"></q-input>
+            </div>
+            <div class="col-4  self-center">
+              <q-btn size="xl" push color="green" label="บันทึกข่าว"></q-btn>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-6">
+          <q-uploader url="http://localhost:4444/upload" label="เพิ่มภาพ ( ไม่เกิน 3 ภาพ )" multiple hide-upload-btn
+            style="height: 250px;width: 100%;" max-files="3">
+            <template v-slot:list="scope">
+              <q-list separator>
+
+                <q-item v-for="file in scope.files" :key="file.__key">
+                  <q-item-section>
+                    <q-item-label class="full-width ellipsis">
+                      {{ file.name }}
+                    </q-item-label>
+
+                    <q-item-label caption>
+                      Status: {{ file.__status }}
+                    </q-item-label>
+
+                    <q-item-label caption>
+                      {{ file.__sizeLabel }} / {{ file.__progressLabel }}
+                    </q-item-label>
+                  </q-item-section>
+
+                  <q-item-section v-if="file.__img" thumbnail class="gt-xs">
+                    <img :src="file.__img.src">
+                  </q-item-section>
+
+                  <q-item-section top side>
+                    <q-btn class="gt-xs" size="12px" flat dense round icon="delete" @click="scope.removeFile(file)" />
+                  </q-item-section>
+                </q-item>
+
+              </q-list>
+            </template>
+          </q-uploader>
+        </div>
       </div>
     </div>
+
     <div class="q-pa-md">
-      
-      <q-table auto-width style="height: 75vh;" class="my-sticky-header-table" flat bordered title="ช้อมูลโรงแรม"
-        :rows="table_rows" :columns="table_columns" row-key="name" no-data-label="ไม่พบข้อมูลที่ท่านค้นหา"
-        :visible-columns="visibleColumns" separator="cell" :pagination="initialPagination">
-        <template v-slot:top>
-<!-- 
-          <q-space />
-          <div v-if="$q.screen.gt.xs" class="col">
-            <q-toggle v-model="visibleColumns" val="ลำดับที่" label="ลำดับที่" />
-            <q-toggle v-model="visibleColumns" val="(จำนวนห้องประมาณการ) ชื่อโรงแรม" label="(จำนวนห้องประมาณการ) ชื่อโรงแรม" />
-            <q-toggle v-model="visibleColumns" val="ที่อยู่" label="ที่อยู่" />
-            <q-toggle v-model="visibleColumns" val="แผนที่" label="Protein" />
-            <q-toggle v-model="visibleColumns" val="ราคาต่ำสุด" label="ราคาต่ำสุด" />
-            <q-toggle v-model="visibleColumns" val="เพิ่มเติม" label="เพิ่มเติม" />
-            <q-toggle v-model="visibleColumns" val="วันที่เก็บข้อมูล" label="วันที่เก็บข้อมูล" />
-          </div>
-          <q-select v-else v-model="visibleColumns" multiple borderless dense options-dense
-            :display-value="$q.lang.table.columns" emit-value map-options :options="table_columns" option-value="name"
-            style="min-width: 150px" /> -->
 
-          <q-space />
-
-          <q-select v-model="visibleColumns" multiple outlined dense label="ตารางที่แสดง" options-dense
-            :display-value="$q.lang.table.columns" emit-value map-options :options="table_columns" option-value="name"
-            options-cover style="min-width: 150px" />
-        </template>
-        <template v-slot:body-cell-latitude="props">
-          <q-td :props="props">
-            <div v-show="(props.row.latitude && props.row.longitude)">
-              <q-btn class="full-width" outline icon="location_on"
-                :href="createGoogleMapLink(props.row.latitude, props.row.longitude)" target="_blank" label="เปิดแผนที่"
-                color="blue" />
-            </div>
-          </q-td>
-        </template>
-        <template v-slot:body-cell-hotel_info_link="props">
-          <q-td :props="props">
-            <div v-show="props.row.hotel_info_link">
-              <q-btn :href="props.row.hotel_info_link" target="_blank" label="ไปยังเว็บ" color="green" />
-
-            </div>
-          </q-td>
-        </template>
-        <template v-slot:body-cell-address="props">
-          <q-td :props="props">
-            <p>{{ props.row.address }}</p>
-          </q-td>
-        </template>
-        <template v-slot:body-cell-hotel_name="props">
-          <q-td :props="props">
-
-            <!-- <div>
-              {{ props.row.hotel_name }}
-              <q-badge class="float-left ma-lg" color="orange"> {{ checkTotalRoom(props.row.total_room) }}</q-badge>
-            </div> -->
-            <div v-if="props.row.total_room > 0">
-              <q-chip>
-                <q-avatar color="green" text-color="white">{{ checkTotalRoom(props.row.total_room) }}</q-avatar>
-                {{ props.row.hotel_name }}
-              </q-chip>
-            </div>
-            <div v-if="props.row.total_room === 0">
-              <q-chip>
-                <q-avatar color="red" text-color="white">X</q-avatar>
-                {{ props.row.hotel_name }}
-              </q-chip>
-            </div>
-          </q-td>
-        </template>
-      </q-table>
 
     </div>
 

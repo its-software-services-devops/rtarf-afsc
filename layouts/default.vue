@@ -72,6 +72,10 @@ function setUsername() {
 
 
 }
+onBeforeMount(() => {
+  // useCheckLogin()
+  // setUsername()
+})
 onMounted(() => {
   useCheckLogin()
   setUsername()
@@ -92,7 +96,7 @@ onMounted(() => {
         /> -->
 
         <q-toolbar-title>
-          จดหมายข่าว || ศูนย์รักษาความปลอดภัยแห่งชาติ
+          ศูนย์รักษาความปลอดภัยแห่งชาติ
         </q-toolbar-title>
 
         <!-- <div>Quasar v{{ $q.version }}</div> -->
