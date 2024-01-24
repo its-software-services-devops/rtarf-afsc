@@ -72,14 +72,36 @@ function setUsername() {
 
 
 }
+function handleBeforeUnload() {
+  // Clear local storage or perform other actions
+  localStorage.clear();
+};
+// window.addEventListener('beforeunload', handleBeforeUnload);
+
+
+
+
 onBeforeMount(() => {
+  // window.removeEventListener('beforeunload', handleBeforeUnload);
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('beforeunload', handleBeforeUnload);
+  }
   // useCheckLogin()
   // setUsername()
 })
 onMounted(() => {
   useCheckLogin()
   setUsername()
+  if (typeof window !== 'undefined') {
+    window.addEventListener('beforeunload', handleBeforeUnload);
+  }
 })
+
+
+// onbeforeunload(() => {
+//   localStorage.clear()
+// })
+
 </script>
 <template>
   <q-layout view="lHh Lpr lFf">

@@ -174,15 +174,6 @@ function numberFormat(number: any) {
   }
 }
 
-function createGoogleMapLink(latitude: String, longitude: String) {
-
-  if (latitude && longitude) {
-    let link = "https://www.google.com/maps/dir/?api=1&destination=" + latitude + "," + longitude
-    return link
-  } else {
-    return null
-  }
-}
 
 function convertTimestamp(datetime: string) {
   let dbtime = moment(datetime);
@@ -200,7 +191,7 @@ function onRejected(rejectedEntries) {
   // Notify plugin needs to be installed
   // https://quasar.dev/quasar-plugins/notify#Installation
   try {
-    console.log()
+    console.log(rejectedEntries)
   } catch (error) {
 
   }
@@ -220,52 +211,7 @@ function dropCapture(event) {
   console.log(event)
 }
 
-async function searchByProvince() {
-  console.log(province_name.value)
-  console.log(dateFilter.value)
 
-  // return
-  if (province_name.value && site_name) {
-    try {
-      loading.show()
-
-      let auth_key = useGetAuthKey()
-      // console.log(auth_key)
-      const config = useRuntimeConfig();
-
-      let url = config.public.baseURL + '/scrape/listTodayHotel'
-      let result = await useFetch(url, {
-        method: 'post',
-        body: {
-          province_name: province_name,
-          site_name: site_name,
-          dateFilter: dateFilter,
-          auth: { auth_key: auth_key }
-        }
-      })
-      console.log(result)
-      if (result.status.value === 'success') {
-        console.log(result.data.value.rows)
-        let data_rows = result.data.value.rows
-        for (let index = 0; index < data_rows.length; index++) {
-          const element = data_rows[index];
-          element.index = index + 1
-
-        }
-        console.log(data_rows)
-        table_rows.value = data_rows
-
-      }
-    } catch (error) {
-
-    } finally {
-      loading.hide()
-    }
-  } else {
-    useCustomAlert('รายละเอียดไม่ครบ', 'กรุณาระบุจังหวัดและเว็บไซต์')
-  }
-
-}
 
 onMounted(() => {
   dateFilter.value = moment().format('DD-MM-YYYY');
