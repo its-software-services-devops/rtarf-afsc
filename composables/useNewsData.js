@@ -3,7 +3,11 @@ let news = [
         title: "title1",
         paragraph: "paragrapt",
         tag: "tag1",
-        images: ['image1', 'image2', 'image3']
+        images: ['image1', 'image2', 'image3'],
+        created_date:"",
+        updated_date:"",
+        updated_by:"",
+        created_by:"admin"
     },
 
 ]

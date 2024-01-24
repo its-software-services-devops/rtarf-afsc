@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import type { EssentialLinkProps } from '../components/EssentialLink.vue';
-
+const route = useRoute()
 const essentialLinks: EssentialLinkProps[] = [
   {
     title: 'Docs',
@@ -61,6 +61,9 @@ function toggleLeftDrawer() {
 function setUsername() {
   let local_username = useGetUsername()
   // username.value = local_username
+  console.log('get username')
+  console.log(local_username)
+  // local_username = "admin"
   if (local_username) {
     username.value = local_username
     initUsername.value = true
@@ -70,10 +73,10 @@ function setUsername() {
     console.log('username not set')
   }
 
-
 }
 function handleBeforeUnload() {
   // Clear local storage or perform other actions
+  console.log('clear storage')
   localStorage.clear();
 };
 // window.addEventListener('beforeunload', handleBeforeUnload);
@@ -84,15 +87,28 @@ function handleBeforeUnload() {
 onBeforeMount(() => {
   // window.removeEventListener('beforeunload', handleBeforeUnload);
   if (typeof window !== 'undefined') {
+    console.log('onBeforeMount')
     window.removeEventListener('beforeunload', handleBeforeUnload);
   }
   // useCheckLogin()
   // setUsername()
 })
+watchEffect(() => {
+  console.log('in watch eff')
+  if (route.path != '/login') { // Check if in main page
+    // console.log('')
+
+    username.value = 'admin'
+    initUsername.value = true
+
+    // setUsername(); // Trigger the function
+  }
+});
 onMounted(() => {
   useCheckLogin()
   setUsername()
   if (typeof window !== 'undefined') {
+    console.log('onMounted')
     window.addEventListener('beforeunload', handleBeforeUnload);
   }
 })
@@ -122,7 +138,9 @@ onMounted(() => {
         </q-toolbar-title>
 
         <!-- <div>Quasar v{{ $q.version }}</div> -->
-        <div v-show="initUsername">
+        <!-- <div v-show="initUsername"> -->
+        <div v-show="(route.path != '/login')">
+
           <q-chip outline color="white" text-color="white" icon="account_circle">
             {{ username }}
           </q-chip>

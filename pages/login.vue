@@ -42,6 +42,7 @@ const username = ref(null)
 const password = ref(null)
 
 async function onSubmit() {
+    const router = useRouter()
     const config = useRuntimeConfig();
     // let url = config.public.baseURL + '/auth/login'
     // let result = await useFetch(url, {
@@ -65,7 +66,8 @@ async function onSubmit() {
         let currentUrl = new URL(window.location)
 
         setStorage({ username: username.value })
-        location.replace(currentUrl.origin)
+        // location.replace(currentUrl.origin)
+        router.push("/")
 
         // console.log("click submit");
     }
