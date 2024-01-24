@@ -268,7 +268,7 @@ async function searchByProvince() {
 }
 
 onMounted(() => {
-  dateFilter.value = moment().format('YYYY-MM-DD');
+  dateFilter.value = moment().format('DD-MM-YYYY');
 })
 </script>
 <template>
@@ -286,7 +286,7 @@ onMounted(() => {
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                <q-date v-model="dateFilter" mask="YYYY-MM-DD">
+                <q-date v-model="dateFilter" mask="DD-MM-YYYY">
                   <div class="row items-center justify-end">
                     <q-btn v-close-popup label="Close" color="primary" flat />
                   </div>
