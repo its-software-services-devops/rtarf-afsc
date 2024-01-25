@@ -4,22 +4,15 @@ let news = [
         paragraph: "paragrapt",
         tag: "tag1",
         images: ['image1', 'image2', 'image3'],
-        created_date:"",
-        updated_date:"",
-        updated_by:"",
-        created_by:"admin"
+        created_date: "01-01-2024",
+        updated_date:  "01-01-2024",
+        updated_by: "admin",
+        created_by: "admin"
     },
 
 ]
 
-export const CurrentNews = () => {
-    let currentUrl = "api" + window.location.pathname;
-    // const route = useRoute()
-    // console.log('current name', route.name)
-    // console.log(this.$route.path);
-    // let routePath 
-    // console.log(route.path);
-    return currentUrl
-    // console.log('current name', useRoute().route.path)
+export const getCurrentNews = () => {
+    return news
 }
 

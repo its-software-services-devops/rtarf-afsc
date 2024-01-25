@@ -94,7 +94,7 @@ onBeforeMount(() => {
   // setUsername()
 })
 watchEffect(() => {
-  console.log('in watch eff')
+  // console.log('in watch eff')
   if (route.path != '/login') { // Check if in main page
     // console.log('')
 
