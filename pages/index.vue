@@ -12,19 +12,6 @@ loadingBar.setDefaults({
   size: '15px',
   position: 'bottom',
 })
-const news = ref([
-  {
-    title: "title1",
-    paragraph: "paragrapt",
-    tag: "tag1",
-    images: ['image1', 'image2', 'image3'],
-    created_date: "01-01-2024",
-    updated_date: "01-01-2024",
-    updated_by: "admin",
-    created_by: "admin"
-  },
-
-])
 
 // title: "title1",
 //         paragraph: "paragrapt",
@@ -34,16 +21,16 @@ const news = ref([
 //         updated_date: "",
 //         updated_by: "",
 //         created_by: "admin"
+const isEditMode = ref(false)
 const textEdit = ref('')
-const newData = ref([])
 const filter = ref('')
 const dateFilter = ref(null)
 const table_columns = [
-  { name: 'index', label: 'ลำดับที่', align: 'center', field: 'index', sortable: true, headerStyle: 'width: 5px', style: "max-width: 5px" },
+  { name: 'index', label: 'ลำดับที่', align: 'center', field: 'index', sortable: true },
   { name: 'title', align: 'left', label: 'ชื่อข่าว', field: 'title', sortable: true, },
-  { name: 'paragraph', align: 'left', label: 'รายละเอียดโดยย่อ', field: 'paragraph', sortable: true, },
+  { name: 'paragraph', align: 'left', label: 'รายละเอียดโดยย่อ', field: 'paragraph' },
   { name: 'tag', align: 'center', label: 'Tag', field: 'tag', sortable: true },
-  { name: 'created_date', align: 'center', label: 'วันที่สร้าง', field: 'created_date', format: (val, row) => `${numberFormat(val)} บาท`, sortable: true },
+  { name: 'created_date', align: 'center', label: 'วันที่สร้าง', field: 'created_date', format: (val, row) => `${convertTimestamp(val)}`, sortable: true },
   // { name: 'total_room', align: 'left', label: 'จำนวนห้อง(ประมาณการ)', field: 'total_room', sortable: true },
   { name: 'created_by', align: 'left', label: 'สร้างโดย', field: 'created_by' },
   // { name: 'created_at', align: 'center', label: 'วันที่เก็บข้อมูล', field: 'created_at', format: (val, row) => convertTimestamp(val), sortable: true },
@@ -51,7 +38,42 @@ const table_columns = [
 
 
 // const visibleColumns = ref(['index', 'hotel_name', 'address', 'latitude', 'price_min', 'hotel_info_link', 'created_at'])
-const table_rows = ref([])
+const table_rows = ref([
+  {
+    index: 1,
+    title: "title1",
+    paragraph: "paragraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagrapt",
+    tag: "tag1",
+    images: ['image1', 'image2', 'image3'],
+    created_date: "01-01-2024",
+    updated_date: "01-01-2024",
+    updated_by: "admin",
+    created_by: "admin"
+  },
+  {
+    index: 2,
+    title: "title2",
+    paragraph: "paragrapt2",
+    tag: "tag2",
+    images: ['image1', 'image2', 'image3'],
+    created_date: "01-01-2024",
+    updated_date: "01-01-2024",
+    updated_by: "admin",
+    created_by: "admin"
+  },
+  {
+    index: 3,
+    title: "title3",
+    paragraph: "paragrapt3",
+    tag: "tag3",
+    images: ['image1', 'image2', 'image3'],
+    created_date: "01-01-2024",
+    updated_date: "01-01-2024",
+    updated_by: "admin",
+    created_by: "admin"
+  },
+
+])
 const initialPagination = {
   sortBy: 'desc',
   descending: false,
@@ -191,11 +213,44 @@ function dropCapture(event) {
 }
 const add_new_letter_diag = ref(false)
 const maximizedToggle = ref(true)
+const create_new_letter = ref([
+  {
+    index: 0,
+    title: "",
+    paragraph: "",
+    tag: "",
+    images: ['image1', 'image2', 'image3'],
+    created_date: "",
+    updated_date: "",
+    updated_by: "",
+    created_by: ""
+  }
+])
 
 function addNewsLetter() {
+  isEditMode.value = false
+  create_new_letter.value = [
+    {
+      index: 0,
+      title: "",
+      paragraph: "",
+      tag: "",
+      images: ['image1', 'image2', 'image3'],
+      created_date: "",
+      updated_date: "",
+      updated_by: "",
+      created_by: ""
+    }
+  ]
   console.log(add_new_letter_diag.value)
   add_new_letter_diag.value = true
+}
 
+function editNewsLetter(value) {
+  create_new_letter.value = value
+  isEditMode.value = true
+  add_new_letter_diag.value = true
+  console.log(value)
 }
 
 function exportTable() {
@@ -232,38 +287,107 @@ function exportTable() {
     })
   }
 }
+function truncateString(value: string) {
+  if (value.length > 100) {
+    return (value.substring(0, 80)) + "..."
+  } else {
+    return value
+  }
+}
+
 
 
 
 onMounted(() => {
   dateFilter.value = moment().format('DD-MM-YYYY');
-  newData.value = getCurrentNews()
+  // newData.value = getCurrentNews()
   // console.log(newData.value)
 
-  for (let index = 0; index < news.value.length; index++) {
-    const element = news.value[index];
-    element.index = index + 1
+  // for (let index = 0; index < news.value.length; index++) {
+  //   const element = news.value[index];
+  //   element.index = index + 1
 
-  }
-  console.log(news.value)
-  table_rows.value = news.value
+  // }
+  // console.log(news.value)
+  // table_rows.value = news.value
 })
 </script>
 <template>
   <!-- <q-btn @click="clickVisible">asda</q-btn> -->
   <q-page class="q-pa-lg">
     <div>
-      <h4 class="q-pa-sm q-ma-sm text-center">จดหมายข่าว</h4>
+      <h4 class="q-pa-sm q-ma-sm text-center text-bold">จดหมายข่าว</h4>
     </div>
     <div class="q-pa-md">
+      <!-- <div class="q-pa-md">
+        <q-table class="my-sticky-header-table" :filter="filter" flat bordered title="Treats" :rows="table_rows"
+          :columns="table_columns" row-key="name" />
+      </div> -->
 
       <q-table auto-width style="height: 75vh;" :filter="filter" class="my-sticky-header-table" flat bordered
-        title="ช้อมูลโรงแรม" :rows="table_rows" :columns="table_columns" row-key="name"
-        no-data-label="ไม่พบข้อมูลที่ท่านค้นหา" separator="cell" :pagination="initialPagination">
+        title="ข้อมูลจดหมายข่าว" :rows="table_rows" :columns="table_columns" row-key="name" wrap-cells
+        no-data-label="ไม่พบข้อมูลที่ท่านค้นหา" separator="cell">
+        <template v-slot:top-right>
+          <q-btn color="primary" icon-right="archive" label="Export to csv" no-caps @click="exportTable" />
+        </template>
+        <template v-slot:header="props">
+          <q-tr :props="props">
+            <q-th v-for="col in props.cols" :key="col.name" :props="props" class="text-bold bg-primary"
+              style="font-size: large;font-weight: bold;">
+              <!-- <h6 class="text-bold q-pa-none q-ma-none">      {{ col.label }}</h6> -->
+              {{ col.label }}
+            </q-th>
+          </q-tr>
+        </template>
+        <template v-slot:body-cell-index="props">
+          <q-td :props="props">
+
+
+            <q-chip>
+
+              <q-btn rounded color="blue-grey" icon="edit" @click="editNewsLetter(props.row)" />
+              <q-avatar color="green" text-color="white">{{ props.row.index }}</q-avatar>
+              <!-- {{ props.row.index }} -->
+            </q-chip>
+
+          </q-td>
+        </template>
+        <template v-slot:body-cell-paragraph="props">
+          <q-td :props="props">
+            {{ truncateString(props.row.paragraph) }}
+            <div v-if="props.row.paragraph.length > 100">
+              <!-- <q-btn color="primary">
+                เพิ่มเติม
+                <q-tooltip class="bg-purple text-body2" :offset="[10, 10]">
+                  {{ props.row.paragraph
+                  }}
+                </q-tooltip>
+              </q-btn> -->
+
+            </div>
+          </q-td>
+        </template>
+
+        <!-- <template v-slot:body="props">
+          <q-tr :props="props">
+            <q-td auto-width>
+              <q-btn size="sm" color="accent" round dense @click="props.expand = !props.expand"
+                :icon="props.expand ? 'remove' : 'add'" />
+            </q-td>
+            <q-td v-for="col in props.cols" :key="col.name" :props="props">
+              {{ col.value }}
+            </q-td>
+          </q-tr>
+          <q-tr v-show="props.expand" :props="props">
+            <q-td colspan="100%">
+              <div class="text-left"> {{ props.row.paragraph }}.</div>
+            </q-td>
+          </q-tr>
+        </template> -->
         <template v-slot:top>
 
-          <q-input outlined :input-style="{ color: 'white' }" style="width: 30vw;" dense debounce="300" color="white"
-            v-model="filter">
+          <q-input label="ค้นหา" outlined :input-style="{ color: 'white' }" style="width: 30vw;" dense debounce="300"
+            color="white" v-model="filter">
             <template v-slot:append>
               <q-icon name="search" color="white" />
             </template>
@@ -271,32 +395,9 @@ onMounted(() => {
           <q-space />
           <q-btn outlined push color="primary" class="q-ml-sm" icon-right="add" label="เพิ่มจดหมายข่าว" no-caps
             @click="addNewsLetter()" />
-          <!-- <q-btn outlined class="q-ml-sm" color="green" icon-right="archive" label="Export to csv" no-caps
-            @click="exportTable" /> -->
-        </template>
 
-        <template v-slot:body-cell-latitude="props">
-          <q-td :props="props">
-            <div v-show="(props.row.latitude && props.row.longitude)">
-              <q-btn class="full-width  text-white" outline icon="location_on"
-                :href="createGoogleMapLink(props.row.latitude, props.row.longitude)" target="_blank" label="เปิดแผนที่"
-                color="blue" />
-            </div>
-          </q-td>
         </template>
-        <template v-slot:body-cell-hotel_info_link="props">
-          <q-td :props="props">
-            <div v-show="props.row.hotel_info_link">
-              <q-btn :href="props.row.hotel_info_link" target="_blank" label="ไปยังเว็บ" color="green" />
-
-            </div>
-          </q-td>
-        </template>
-        <template v-slot:body-cell-address="props">
-          <q-td :props="props">
-            <p>{{ props.row.address }}</p>
-          </q-td>
-        </template>
+        <!-- 
         <template v-slot:body-cell-hotel_name="props">
           <q-td :props="props">
 
@@ -313,7 +414,7 @@ onMounted(() => {
               </q-chip>
             </div>
           </q-td>
-        </template>
+        </template> -->
       </q-table>
 
     </div>
@@ -322,15 +423,17 @@ onMounted(() => {
       transition-hide="slide-down">
       <q-card>
         <q-bar class="bg-primary">
+          <div class="text-bold">เพิ่มจดหมายข่าว</div>
+
           <q-space />
           <q-btn class="bg-dark" dense flat icon="minimize" @click="maximizedToggle = false" :disable="!maximizedToggle">
-            <q-tooltip v-if="maximizedToggle" class="bg-white text-primary">Minimize</q-tooltip>
+            <q-tooltip v-if="maximizedToggle" class="bg-white text-primary">ย่อ</q-tooltip>
           </q-btn>
           <q-btn class="bg-dark" dense flat icon="crop_square" @click="maximizedToggle = true" :disable="maximizedToggle">
-            <q-tooltip v-if="!maximizedToggle" class="bg-white text-primary">Maximize</q-tooltip>
+            <q-tooltip v-if="!maximizedToggle" class="bg-white text-primary">ขยาย</q-tooltip>
           </q-btn>
           <q-btn class="bg-dark" dense flat color="red" icon="close" v-close-popup>
-            <q-tooltip class="bg-red text-primary">Close</q-tooltip>
+            <q-tooltip class="bg-red text-white">ปิด</q-tooltip>
           </q-btn>
         </q-bar>
 
@@ -344,8 +447,8 @@ onMounted(() => {
         <div class="q-pa-md example-col-gutter-horizontal q-gutter-x-xs q-gutter-y-lg">
 
           <div class="row q-col-gutter-x-md">
-            <q-input outlined dense class="col-9" label="หัวข้อ"></q-input>
-            <q-input class="col-3" dense outlined v-model="dateFilter" label="วันที่( วัน-เดือน-ปี )">
+            <q-input outlined dense class="col-9" label="หัวข้อ" v-model="create_new_letter.title"></q-input>
+            <q-input class="col-3" dense outlined v-model="create_new_letter.created_date" label="วันที่( วัน-เดือน-ปี )">
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer">
                   <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -369,7 +472,7 @@ onMounted(() => {
             <!-- <q-btn class="col-2 q-ml-lg" color="primary" @click="searchByProvince">ค้นหา</q-btn>  -->
           </div>
           <div class="q-gutter-sm">
-            <q-editor style="height: 50vh;" v-model="textEdit" @paste.native="evt => pasteCapture(evt)"
+            <q-editor style="height: 50vh;" v-model="create_new_letter.paragraph" @paste.native="evt => pasteCapture(evt)"
               @drop.native="evt => dropCapture(evt)" :dense="$q.screen.lt.md" :toolbar="[
                 [
                   {
@@ -459,7 +562,7 @@ onMounted(() => {
             <div class="col-6">
               <div class="column justify-around" style="height: 100%">
                 <div class="col-4 justify-start">
-                  <q-input outlined dense label="ขื่อ Tag"></q-input>
+                  <q-input outlined dense label="ขื่อ Tag" v-model="create_new_letter.tag"></q-input>
                 </div>
                 <!-- <div class="col-4  self-center">
                   <q-btn size="xl" push color="green" label="บันทึกข่าว"></q-btn>
@@ -474,18 +577,14 @@ onMounted(() => {
                 <template v-slot:list="scope">
                   <q-list separator>
 
-                    <q-item v-for="file in scope.files" :key="file.__key">
+                    <q-item v-for="(file, index) in scope.files" :key="file.__key">
                       <q-item-section>
                         <q-item-label class="full-width ellipsis">
                           {{ file.name }}
                         </q-item-label>
 
                         <q-item-label caption>
-                          Status: {{ file.__status }}
-                        </q-item-label>
-
-                        <q-item-label caption>
-                          {{ file.__sizeLabel }} / {{ file.__progressLabel }}
+                          Size : {{ file.__sizeLabel }}
                         </q-item-label>
                       </q-item-section>
 
@@ -504,8 +603,11 @@ onMounted(() => {
             </div>
 
             <div class="col-12 items-center">
-              <div class="column items-center q-mt-lg" style="height: 100%">
+              <div v-if="isEditMode" class="column items-center q-mt-lg" style="height: 100%">
                 <q-btn size="lg" push color="green" label="บันทึกข่าว"></q-btn>
+              </div>
+              <div v-if="!isEditMode" class="column items-center q-mt-lg" style="height: 100%">
+                <q-btn size="lg" push color="green" label="สร้างข่าว"></q-btn>
               </div>
             </div>
           </div>
@@ -543,7 +645,6 @@ onMounted(() => {
 .my-sticky-header-table
   /* height or max-height is important */
   height: 310px
-
   .q-table__top,
   .q-table__bottom,
   thead tr:first-child th
