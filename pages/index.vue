@@ -81,7 +81,7 @@ const textEdit = ref('')
 const filter = ref('')
 const dateFilter = ref(null)
 const table_columns = [
-  { name: 'index', label: 'ลำดับที่', align: 'center', field: 'index', sortable: true },
+  { name: 'index', label: 'ลำดับที่', align: 'center', field: 'index', sortable: true, headerStyle: 'width: 3px' },
   { name: 'title', align: 'left', label: 'ชื่อข่าว', field: 'title', sortable: true, },
   { name: 'paragraph', align: 'left', label: 'รายละเอียดโดยย่อ', field: 'paragraph' },
   { name: 'tag', align: 'center', label: 'Tag', field: 'tag', sortable: true },
@@ -465,12 +465,14 @@ onMounted(() => {
           <q-td :props="props">
 
 
-            <q-chip>
-
-              <q-btn rounded color="blue-grey" icon="edit" @click="editNewsLetter(props.row)" />
-              <q-avatar color="green" text-color="white">{{ props.row.index }}</q-avatar>
-              <!-- {{ props.row.index }} -->
+            <q-chip class="shadow-up-3" clickable rounded @click="editNewsLetter(props.row)">
+              <q-avatar icon="edit" color="green" text-color="white"></q-avatar>
+              <div class="text-center text-bold">{{ props.row.index }} </div>
             </q-chip>
+            <!-- <q-chip>
+              <q-btn dense rounded color="blue-grey" icon="edit" @click="editNewsLetter(props.row)" />
+              <q-avatar color="green" text-color="white">{{ props.row.index }}</q-avatar>
+            </q-chip> -->
 
           </q-td>
         </template>
