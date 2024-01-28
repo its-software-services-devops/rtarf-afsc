@@ -21,6 +21,8 @@ loadingBar.setDefaults({
 //         updated_date: "",
 //         updated_by: "",
 //         created_by: "admin"
+const file = ref(null)
+const excelFile = ref("")
 const isEditMode = ref(false)
 const textEdit = ref('')
 const filter = ref('')
@@ -41,9 +43,9 @@ const table_columns = [
 const table_rows = ref([
   {
     index: 1,
-    title: "title1",
-    paragraph: "paragraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagraptparagrapt",
-    tag: "tag1",
+    title: "สถานการณ์ภายในประเทศ",
+    paragraph: `มื่อ วันที่ 12 มกราคม 2567 เมื่อเวลา 10.00 น. ที่อาคารศรียานนท์ รพ.ตํารวจ ถนนพระรามที่ 1 นายชัยชนะ เดชเดโช สส.นครศรีธรรมราช ในฐานะประธานคณะกรรมาธิการตํารวจ สภา ผู้แทนราษฎร นัดหมายผู้บริหารรพ.ตํารวจ ขอเดินทางเข้าไปศึกษาดูงาน และเยี่ยมชมการปฏิบัติหน้าที่ในการ ควบคุมผู้ต้องขังป่วยที่รักษาตัวอยู่ โดยมุ่งเน้นไปที่นายทักษิณ ชินวัตร อดีตนายกฯ นักโทษคดีทุจริต รักษาตัว อยู่ที่ชั้น 14 อาคารมหาภูมิพลราชานุสรณ์ 88 พรรษา`,
+    tag: "ภายในประเทศ",
     images: ['image1', 'image2', 'image3'],
     created_date: "01-01-2024",
     updated_date: "01-01-2024",
@@ -52,9 +54,12 @@ const table_rows = ref([
   },
   {
     index: 2,
-    title: "title2",
-    paragraph: "paragrapt2",
-    tag: "tag2",
+    title: "สถานการณ์ภายนอกประเทศ",
+    paragraph: `เมื่อ 4 พ.ย.66 พล.ท.คําเลียง อุทะไกสอน รองรัฐมนตรีกระทรวงป้องกันประเทศ หัวหน้ากรมใหญ่เสนาธิ
+การ กองทัพประชาชนลาว ได้ลงตรวจพื้นที่เพื่อเตรียมความพร้อมสําหรับการซ้อมรบร่วมของกองทัพ “ลาว-รัสเซีย” ครั้งใหญ่ 
+ภายใต้รหัส “LAROS-2022” ซึ่งจะจัดขึ้นในแขวงเชียงขวาง ภาคตะวันออกเฉียงเหนือของลาว ที่มีชายแดนติดกับประเทศ
+เวียดนาม`,
+    tag: "ภายนอกประเทศ",
     images: ['image1', 'image2', 'image3'],
     created_date: "01-01-2024",
     updated_date: "01-01-2024",
@@ -63,9 +68,13 @@ const table_rows = ref([
   },
   {
     index: 3,
-    title: "title3",
-    paragraph: "paragrapt3",
-    tag: "tag3",
+    title: "กลุ่มผู้ได้รับความเดือดร้อน",
+    paragraph: `เมื่อ  27 ธ.ค. 66 กลุ่มประมงพาณิชย์และประมงต่อเนื่องใน จ.ระยอง รวมทั้งกลุ่ม
+ประมงสมาคมปากน้ําประแสร์ อ.แกลง จ.ระยอง ได้เดินทางโดยรถบัสจํานวน 6 คัน และรถตู้อีก 7 คัน พร้อม
+สัมภาระ อาหาร เต็นท์ที่พักค้างแรม เพื่อเข้าร่วมการชุมนุมเป็นเวลา 3 วัน ร่วมกับกลุ่มประมงจาก 22 จังหวัด
+ชายทะเล ที่บริเวณด้านหน้ากระทรวงเกษตรและสหกรณ์ กรุงเทพมหานคร เพื่อทวงถามถึงข้อเรียกร้อง 11 ข้อ
+ในการจัดการปัญหาที่ส่งผลกระทบต่อการทําประมงของไทยจากรัฐบาล`,
+    tag: "ผู้เดือดร้อน",
     images: ['image1', 'image2', 'image3'],
     created_date: "01-01-2024",
     updated_date: "01-01-2024",
@@ -253,6 +262,12 @@ function editNewsLetter(value) {
   console.log(value)
 }
 
+function addNewsLetterFile() {
+  console.log(file.value)
+  file.value.pickFiles()
+  // file.pickFiles();
+}
+
 function exportTable() {
   // naive encoding to csv format
   let export_datetime = moment().format('YYYY-MM-DD_HH-mm-ss');
@@ -328,7 +343,29 @@ onMounted(() => {
         title="ข้อมูลจดหมายข่าว" :rows="table_rows" :columns="table_columns" row-key="name" wrap-cells
         no-data-label="ไม่พบข้อมูลที่ท่านค้นหา" separator="cell">
         <template v-slot:top-right>
-          <q-btn color="primary" icon-right="archive" label="Export to csv" no-caps @click="exportTable" />
+
+          <q-file outlined dense v-model="excelFile" label="อัพโหลดจดหมายข่าว" style="min-width: 100px"
+            accept="image/jpeg , .pdf , .xls , .xlsx">
+            <template v-slot:prepend>
+              <q-icon name="upload_file" @click.stop.prevent />
+            </template>
+            <template v-slot:append>
+              <q-icon name="close" @click.stop.prevent="excelFile = null" class="cursor-pointer" />
+            </template>
+
+          </q-file>
+          <!-- <q-btn color="primary" icon-right="archive" label="Export to csv" no-caps @click="exportTable" /> -->
+
+          <q-btn outlined push color="primary" class="q-ml-sm" icon-right="add" label="เพิ่มจดหมายข่าว" no-caps
+            @click="addNewsLetter()" />
+        </template>
+        <template v-slot:top-left>
+
+          <q-input label="ค้นหา" outlined style="width: 30vw;" dense debounce="300" color="white" v-model="filter">
+            <template v-slot:append>
+              <q-icon name="search" color="white" />
+            </template>
+          </q-input>
         </template>
         <template v-slot:header="props">
           <q-tr :props="props">
@@ -384,19 +421,39 @@ onMounted(() => {
             </q-td>
           </q-tr>
         </template> -->
-        <template v-slot:top>
+        <!-- <template v-slot:top>
+          <div class="row  justify-between">
 
-          <q-input label="ค้นหา" outlined :input-style="{ color: 'white' }" style="width: 30vw;" dense debounce="300"
-            color="white" v-model="filter">
-            <template v-slot:append>
-              <q-icon name="search" color="white" />
-            </template>
-          </q-input>
-          <q-space />
+            <div class="col-6">
+              <q-input label="ค้นหา" outlined style="width: 30vw;" dense debounce="300" color="white" v-model="filter">
+                <template v-slot:append>
+                  <q-icon name="search" color="white" />
+                </template>
+              </q-input>
+            </div>
+            <div class="col-6">
+              <div class="row">
+                <q-file outlined dense v-model="excelFile" label="อัพโหลดไฟล์ข่าว" style="min-width: 150px">
+                  <template v-slot:prepend>
+                    <q-icon name="upload_file" @click.stop.prevent />
+                  </template>
+                  <template v-slot:append>
+                    <q-icon name="close" @click.stop.prevent="excelFile = null" class="cursor-pointer" />
+                  </template>
+
+                </q-file>
+
+                <q-btn outlined push color="primary" class="q-ml-sm" icon-right="add" label="เพิ่มจดหมายข่าว" no-caps
+                  @click="addNewsLetter()" />
+              </div>
+            </div>
+          </div>
+        </template> -->
+        <!-- <template v-slot:top-right>
           <q-btn outlined push color="primary" class="q-ml-sm" icon-right="add" label="เพิ่มจดหมายข่าว" no-caps
             @click="addNewsLetter()" />
 
-        </template>
+        </template> -->
         <!-- 
         <template v-slot:body-cell-hotel_name="props">
           <q-td :props="props">
