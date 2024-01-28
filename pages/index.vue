@@ -4,6 +4,59 @@ import type { QBtnProps, QNotifyOptions } from 'quasar'
 import moment from 'moment';
 // import { useGoogleFonts } from "@nuxtjs/google-fonts";
 
+const imageList = [
+  {
+    img: new URL('../assets/images/img-1.jpg', import.meta.url).href,
+    link: "https://ibb.co/s2bpdcD"
+
+  }
+  ,
+  {
+    img: new URL('../assets/images/img-2.jpg', import.meta.url).href,
+    link: "https://ibb.co/TDXt0k3"
+  }
+  ,
+  {
+    img: new URL('../assets/images/img-3.jpg', import.meta.url).href,
+    link: "https://ibb.co/nMzDFmz"
+  }
+  ,
+  {
+    img: new URL('../assets/images/img-4.jpg', import.meta.url).href,
+    link: "https://ibb.co/m4vPqc0"
+  }
+  ,
+  {
+    img: new URL('../assets/images/img-5.jpg', import.meta.url).href,
+    link: "https://ibb.co/8NZFw3z"
+  }
+  ,
+  {
+    img: new URL('../assets/images/img-6.jpg', import.meta.url).href,
+    link: "https://ibb.co/swH5Mfz"
+  }
+  ,
+  {
+    img: new URL('../assets/images/img-7.jpg', import.meta.url).href,
+    link: "https://ibb.co/VmR6Yxr"
+  }
+  ,
+  {
+    img: new URL('../assets/images/img-8.jpg', import.meta.url).href,
+    link: "https://ibb.co/hZ4vmfY"
+  }
+  ,
+  {
+    img: new URL('../assets/images/img-9.jpg', import.meta.url).href,
+    link: "https://ibb.co/C92JdQr"
+  }
+  ,
+  {
+    img: new URL('../assets/images/img-10.jpg', import.meta.url).href,
+    link: "https://ibb.co/J5VmB23"
+  }
+]
+
 
 const { dialog, fullscreen, bottomSheet, loading, loadingBar, notify, dark } = useQuasar()
 
@@ -44,9 +97,14 @@ const table_rows = ref([
   {
     index: 1,
     title: "สถานการณ์ภายในประเทศ",
-    paragraph: `มื่อ วันที่ 12 มกราคม 2567 เมื่อเวลา 10.00 น. ที่อาคารศรียานนท์ รพ.ตํารวจ ถนนพระรามที่ 1 นายชัยชนะ เดชเดโช สส.นครศรีธรรมราช ในฐานะประธานคณะกรรมาธิการตํารวจ สภา ผู้แทนราษฎร นัดหมายผู้บริหารรพ.ตํารวจ ขอเดินทางเข้าไปศึกษาดูงาน และเยี่ยมชมการปฏิบัติหน้าที่ในการ ควบคุมผู้ต้องขังป่วยที่รักษาตัวอยู่ โดยมุ่งเน้นไปที่นายทักษิณ ชินวัตร อดีตนายกฯ นักโทษคดีทุจริต รักษาตัว อยู่ที่ชั้น 14 อาคารมหาภูมิพลราชานุสรณ์ 88 พรรษา`,
+    paragraph: `<div style="text-align: center;"><img src="https://picsum.photos/500/300" height="200">&nbsp;</div><blockquote>เมื่อ วันที่ 12 มกราคม 2567 เมื่อเวลา 10.00 น. ที่อาคารศรียานนท์ รพ.ตํารวจ ถนนพระรามที่ 1 นายชัยชนะ เดชเดโช สส.นครศรีธรรมราช ในฐานะประธานคณะกรรมาธิการตํารวจ สภา ผู้แทนราษฎร นัดหมายผู้บริหารรพ.ตํารวจ ขอเดินทางเข้าไปศึกษาดูงาน และเยี่ยมชมการปฏิบัติหน้าที่ในการ ควบคุมผู้ต้องขังป่วยที่รักษาตัวอยู่ โดยมุ่งเน้นไปที่นายทักษิณ ชินวัตร อดีตนายกฯ นักโทษคดีทุจริต รักษาตัว อยู่ที่ชั้น 14 อาคารมหาภูมิพลราชานุสรณ์ 88 พรรษา</blockquote><div><img src="https://picsum.photos/500/300" height="200" style="text-align: center;"><span style="text-align: center;">&nbsp;</span><br></div><div style="text-align: right;">เมื่อ วันที่ 12 มกราคม 2567 เมื่อเวลา 10.00 น. ที่อาคารศรียานนท์ รพ.ตํารวจ ถนนพระรามที่ 1 นายชัยชนะ เดชเดโช สส.นครศรีธรรมราช ในฐานะประธานคณะกรรมาธิการตํารวจ สภา ผู้แทนราษฎร นัดหมายผู้บริหารรพ.ตํารวจ ขอเดินทางเข้าไปศึกษาดูงาน และเยี่ยมชมการปฏิบัติหน้าที่ในการ ควบคุมผู้ต้องขังป่วยที่รักษาตัวอยู่ โดยมุ่งเน้นไปที่นายทักษิณ ชินวัตร อดีตนายกฯ นักโทษคดีทุจริต รักษาตัว อยู่ที่ชั้น 14 อาคารมหาภูมิพลราชานุสรณ์ 88 พรรษา</div>`,
     tag: "ภายในประเทศ",
-    images: ['image1', 'image2', 'image3'],
+    // images: ['image1', 'image2', 'image3'],
+    images: [
+      imageList[0].img,
+      imageList[1].img,
+      imageList[2].img,
+    ],
     created_date: "01-01-2024",
     updated_date: "01-01-2024",
     updated_by: "admin",
@@ -55,12 +113,17 @@ const table_rows = ref([
   {
     index: 2,
     title: "สถานการณ์ภายนอกประเทศ",
-    paragraph: `เมื่อ 4 พ.ย.66 พล.ท.คําเลียง อุทะไกสอน รองรัฐมนตรีกระทรวงป้องกันประเทศ หัวหน้ากรมใหญ่เสนาธิ
+    paragraph: `<img src="https://picsum.photos/500/300" height="200">เมื่อ 4 พ.ย.66 พล.ท.คําเลียง อุทะไกสอน รองรัฐมนตรีกระทรวงป้องกันประเทศ หัวหน้ากรมใหญ่เสนาธิ
 การ กองทัพประชาชนลาว ได้ลงตรวจพื้นที่เพื่อเตรียมความพร้อมสําหรับการซ้อมรบร่วมของกองทัพ “ลาว-รัสเซีย” ครั้งใหญ่ 
 ภายใต้รหัส “LAROS-2022” ซึ่งจะจัดขึ้นในแขวงเชียงขวาง ภาคตะวันออกเฉียงเหนือของลาว ที่มีชายแดนติดกับประเทศ
 เวียดนาม`,
     tag: "ภายนอกประเทศ",
-    images: ['image1', 'image2', 'image3'],
+    // images: ['image1', 'image2', 'image3'],
+    images: [
+      imageList[3].img,
+      imageList[4].img,
+      imageList[5].img,
+    ],
     created_date: "01-01-2024",
     updated_date: "01-01-2024",
     updated_by: "admin",
@@ -69,13 +132,18 @@ const table_rows = ref([
   {
     index: 3,
     title: "กลุ่มผู้ได้รับความเดือดร้อน",
-    paragraph: `เมื่อ  27 ธ.ค. 66 กลุ่มประมงพาณิชย์และประมงต่อเนื่องใน จ.ระยอง รวมทั้งกลุ่ม
-ประมงสมาคมปากน้ําประแสร์ อ.แกลง จ.ระยอง ได้เดินทางโดยรถบัสจํานวน 6 คัน และรถตู้อีก 7 คัน พร้อม
-สัมภาระ อาหาร เต็นท์ที่พักค้างแรม เพื่อเข้าร่วมการชุมนุมเป็นเวลา 3 วัน ร่วมกับกลุ่มประมงจาก 22 จังหวัด
+    paragraph: `เมื่อ 27 ธ.ค. 66 กลุ่มประมงพาณิชย์และประมงต่อเนื่องใน จ.ระยอง รวมทั้งกลุ่ม
+ประมงสมาคมปากน้ําประแสร์ อ.แกลง จ.ระยอง&nbsp;<div><ul><li>ได้เดินทางโดยรถบัสจํานวน 6 คัน&nbsp;</li><li>และรถตู้อีก 7 คัน พร้อม</li></ul><div style="text-align: center;">เพื่อเข้าร่วมการชุมนุมเป็นเวลา 3 วัน ร่วมกับกลุ่มประมงจาก 22 จังหวัด
 ชายทะเล ที่บริเวณด้านหน้ากระทรวงเกษตรและสหกรณ์ กรุงเทพมหานคร เพื่อทวงถามถึงข้อเรียกร้อง 11 ข้อ
-ในการจัดการปัญหาที่ส่งผลกระทบต่อการทําประมงของไทยจากรัฐบาล`,
+ในการจัดการปัญหาที่ส่งผลกระทบต่อการทําประมงของไทยจากรัฐบาล</div><div style="text-align: center;">&nbsp;
+<img src="https://picsum.photos/500/300" height="200"></div></div>`,
     tag: "ผู้เดือดร้อน",
-    images: ['image1', 'image2', 'image3'],
+    // images: ['image1', 'image2', 'image3'],
+    images: [
+      imageList[6].img,
+      imageList[7].img,
+      imageList[8].img,
+    ],
     created_date: "01-01-2024",
     updated_date: "01-01-2024",
     updated_by: "admin",
@@ -303,6 +371,23 @@ function exportTable() {
   }
 }
 function truncateString(value: string) {
+  value = value.replace(`<img src="https://picsum.photos/500/300" height="200">`, "")
+  value = value.replace(`<div style="text-align: center;">`, "")
+  value = value.replace(`&nbsp;`, "")
+  value = value.replace(`<blockquote>`, "")
+  value = value.replace(`</blockquote>`, "")
+  // if (value.includes(`height="200">`)) {
+  //   let checkSplit = value.split(`height="200">`)
+  //   console.log(checkSplit)
+  //   if(checkSplit[0].includes(`<img src="`)){
+  //     value = checkSplit[1]
+  //   }
+  //   if(checkSplit[1].includes(`<img src="`)){
+  //     value = checkSplit[0] 
+  //   }
+
+  // }
+  value.trimStart()
   if (value.length > 100) {
     return (value.substring(0, 80)) + "..."
   } else {
@@ -391,7 +476,8 @@ onMounted(() => {
         </template>
         <template v-slot:body-cell-paragraph="props">
           <q-td :props="props">
-            {{ truncateString(props.row.paragraph) }}
+            <q-card-section v-html="truncateString(props.row.paragraph)" />
+            <!-- {{ truncateString(props.row.paragraph) }} -->
             <div v-if="props.row.paragraph.length > 100">
               <!-- <q-btn color="primary">
                 เพิ่มเติม
@@ -529,7 +615,8 @@ onMounted(() => {
             <!-- <q-btn class="col-2 q-ml-lg" color="primary" @click="searchByProvince">ค้นหา</q-btn>  -->
           </div>
           <div class="q-gutter-sm">
-            <q-editor style="height: 50vh;" v-model="create_new_letter.paragraph" @paste.native="evt => pasteCapture(evt)"
+
+            <q-editor v-model="create_new_letter.paragraph" @paste.native="evt => pasteCapture(evt)"
               @drop.native="evt => dropCapture(evt)" :dense="$q.screen.lt.md" :toolbar="[
                 [
                   {
@@ -601,7 +688,7 @@ onMounted(() => {
                 ],
                 ['quote', 'unordered', 'ordered'],
 
-                ['undo', 'redo'],
+                ['undo', 'redo'], ['viewsource']
                 // ['viewsource']
               ]" :fonts="{
   arial: 'Arial',

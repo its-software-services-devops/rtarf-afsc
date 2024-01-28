@@ -1,7 +1,14 @@
 <template>
     <q-page padding class="row items-center justify-center">
+        <!-- <template>
+            <img src="~/assets/images/img-1.jpg" />
+        </template> -->
+        <!-- <q-img :src="imgUrl" spinner-color="white" style="height: 200px; max-width: 200px" /> -->
+
+        <!-- <img src="~/assets/images/img-1.jpg" height="200"> -->
+        <img src="https://centralinaaging.org/wp-content/uploads/2021/03/Your-Logo-here.png" height="200">
         <div class="row full-width">
-            <div class="col-md-4 offset-md-4 col-xs-12 q-pl-md q-pr-md q-pt-sm">
+            <div class="col-md-4 offset-md-4 col-xs-12 q-pl-md q-pr-md">
                 <q-card>
                     <div class="row">
                         <div class="col-md-12 col-xs-12">
@@ -36,8 +43,18 @@
 </template>
   
 <script setup>
+// const img_1 = import(`../assets/images/img-1.jpg`);
+const imgUrl = new URL('../assets/images/img-1.jpg', import.meta.url).href
+{/* <template>
+            <img :src="require(`../assets/images/img-1.jpg`)" alt="My Image" />
+        </template> */}
+// const plans = [
+//     {
+//         imageSrc: new URL('../assets/images/img-1.png', import.meta.url).href,
 
+//     },
 
+// ];
 const username = ref(null)
 const password = ref(null)
 
