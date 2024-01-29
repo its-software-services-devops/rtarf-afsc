@@ -6,7 +6,12 @@
         <!-- <q-img :src="imgUrl" spinner-color="white" style="height: 200px; max-width: 200px" /> -->
 
         <!-- <img src="~/assets/images/img-1.jpg" height="200"> -->
-        <img src="https://centralinaaging.org/wp-content/uploads/2021/03/Your-Logo-here.png" height="200">
+        <template>
+            <div>
+                <Bar :data="chartData" :options="chartOptions" />
+            </div>
+        </template>
+        <!-- <img src="https://centralinaaging.org/wp-content/uploads/2021/03/Your-Logo-here.png" height="200"> -->
         <div class="row full-width">
             <div class="col-md-4 offset-md-4 col-xs-12 q-pl-md q-pr-md">
                 <q-card>
@@ -43,6 +48,32 @@
 </template>
   
 <script setup>
+import moment from 'moment';
+import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
+import { Bar } from 'vue-chartjs'
+
+// Register
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+
+
+const chartData = ref({
+    labels: ['January', 'February', 'March', 'April', 'May'],
+    datasets: [
+        {
+            label: 'Data One',
+            backgroundColor: '#f87979',
+            data: [40, 20, 12, 50, 10],
+        },
+    ],
+})
+const chartOptions = ref({
+    responsive: true,
+    maintainAspectRatio: false,
+})
+
+
+
+
 // const img_1 = import(`../assets/images/img-1.jpg`);
 const imgUrl = new URL('../assets/images/img-1.jpg', import.meta.url).href
 {/* <template>

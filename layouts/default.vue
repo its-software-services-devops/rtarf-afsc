@@ -4,48 +4,19 @@ import type { EssentialLinkProps } from '../components/EssentialLink.vue';
 const route = useRoute()
 const essentialLinks: EssentialLinkProps[] = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
+    title: 'หน้าหลัก',
+    caption: 'จดหมายข่าว',
+    icon: 'newspaper',
+    link: "/"
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
+    title: 'รายงาน',
+    caption: 'รายงานจดหมายข่าว',
+    icon: 'library_books',
+    link: '/dashboard'
   },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
 ];
+
 
 const leftDrawerOpen = ref(false)
 const initUsername = ref(false)
@@ -56,6 +27,7 @@ function logout() {
   location.replace(currentUrl.origin + "/login")
 }
 function toggleLeftDrawer() {
+  console.log('eftDrawerOpen.value')
   leftDrawerOpen.value = !leftDrawerOpen.value
 }
 function setUsername() {
@@ -107,6 +79,9 @@ watchEffect(() => {
 onMounted(() => {
   useCheckLogin()
   setUsername()
+  leftDrawerOpen.value = false
+
+
   if (typeof window !== 'undefined') {
     console.log('onMounted')
     window.addEventListener('beforeunload', handleBeforeUnload);
@@ -123,16 +98,9 @@ onMounted(() => {
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <!-- <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          :glossy="false"
-          @click="toggleLeftDrawer"
-        /> -->
-
+        <div v-show="initUsername">
+          <q-btn flat dense round icon="menu" aria-label="Menu" :glossy="false" @click="toggleLeftDrawer" />
+        </div>
         <q-toolbar-title>
           ศูนย์รักษาความปลอดภัยแห่งชาติ
         </q-toolbar-title>
@@ -153,23 +121,15 @@ onMounted(() => {
       </q-toolbar>
     </q-header>
 
-    <!-- <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
+    <q-drawer v-model="leftDrawerOpen" :breakpoint="500" bordered v-show="initUsername">
       <q-list>
         <q-item-label header>
-          Essential Links
+          Menu
         </q-item-label>
 
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+        <EssentialLink v-for="link in essentialLinks" :key="link.title" v-bind="link" />
       </q-list>
-    </q-drawer> -->
+    </q-drawer>
 
     <q-page-container>
       <slot />

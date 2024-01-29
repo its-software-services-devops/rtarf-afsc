@@ -589,7 +589,7 @@ onMounted(() => {
         <q-card-section class="q-pt-none">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis perferendis totam, ea at omnis vel numquam exercitationem aut, natus minima, porro labore.
         </q-card-section> -->
-        <div class="q-pa-md example-col-gutter-horizontal q-gutter-x-xs q-gutter-y-lg">
+        <div class="q-pa-lg example-col-gutter-horizontal q-gutter-x-xs q-gutter-y-lg">
 
           <div class="row q-col-gutter-x-md">
             <q-input outlined dense class="col-9" label="หัวข้อ" v-model="create_new_letter.title"></q-input>

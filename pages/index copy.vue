@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { useQuasar } from 'quasar';
+// import { useQuasar } from 'quasar';
 import type { QBtnProps, QNotifyOptions } from 'quasar'
 import moment from 'moment';
 // import { useGoogleFonts } from "@nuxtjs/google-fonts";
 
 
-const { dialog, fullscreen, bottomSheet, loading, loadingBar, notify, dark } = useQuasar()
+// const { dialog, fullscreen, bottomSheet, loading, loadingBar, notify, dark } = useQuasar()
 
-loadingBar.setDefaults({
-  color: 'green',
-  size: '15px',
-  position: 'bottom',
-})
+// loadingBar.setDefaults({
+//   color: 'green',
+//   size: '15px',
+//   position: 'bottom',
+// })
 
 
 const textEdit = ref('')
