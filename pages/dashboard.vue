@@ -42,7 +42,7 @@
             </template>
           </q-input>
 
-          <q-btn class="col-2 q-ml-lg" color="primary" @click="onClickSearch">ค้นหา</q-btn>
+          <q-btn class="col-2 q-ml-lg" color="primary" @click="onClickSearch">แสดง</q-btn>
         </div>
       </div>
 
