@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useQuasar } from 'quasar';
 import type { QBtnProps, QNotifyOptions } from 'quasar'
-import moment from 'moment';
+import moment from 'moment'
 // import { useGoogleFonts } from "@nuxtjs/google-fonts";
 
 const imageList = [
@@ -164,7 +164,7 @@ const initialPagination = {
 //   console.log(visibleColumns.value)
 // }
 
-const suggestions = ref([
+const suggestions = [
   'อัตโนมัติ',   // automation
   'นักบินอัตโนมัติ', // autopilot
   'ยานยนต์',  // automobile
@@ -235,9 +235,15 @@ const suggestions = ref([
   'วัฒนธรรม', // culture
   'ศาสนา', // religion
   'ประเพณี', // tradition
-])
-const filteredSuggestions = ref([])
 
+  'ระเบิด',
+  'ภายในประเทศ',
+  'ต่างประเทศ',
+  'ภายนอกประเทศ',
+  'ผู้เดือดร้อน'
+]
+
+const filterOptions = ref(suggestions)
 const showBottomsheet = () => bottomSheet({
   message: 'Bottom Sheet',
   actions: [
@@ -354,44 +360,49 @@ function onRejected(rejectedEntries) {
     message: `${rejectedEntries.length} file(s) did not pass validation constraints`
   })
 }
-function filterTags(val, update) {
-  if (val === '') {
-    filteredSuggestions.value = suggestions.value;
-    update(() => { });
-    return;
-  }
 
-  const needle = val.toLowerCase();
-  filteredSuggestions.value = suggestions.value.filter(v => v.toLowerCase().indexOf(needle) > -1);
+// const filteredSuggestions = computed(() => {
+//   if (newTag.value) {
+//     return suggestions.value.filter(tag => tag.includes(newTag.value));
+//   }
+//   return [];
+// });
 
-  update(() => { });
-}
-function addTag() {
-  // console.log(newTag.value)
-  // if (newTag.value.trim() !== '') {
-  //   create_new_letter.value[0].tag.push(newTag.value.trim());
-  //   newTag.value = '';
-  // }
-  if (!create_new_letter[0].value.tag.includes(tag)) {
-        create_new_letter[0].value.tag.push(tag);
-      }
-      newTag.value = "";
-}
-
-function removeTag(tag) {
-  // create_new_letter.value[0].tag.splice(index, 1);
-  const index = create_new_letter.value[0].tag.indexOf(tag);
-      if (index !== -1) {
-        create_new_letter[0].value.tag.splice(index, 1);
-      }
-}
-function removeTagFromList(index) {
-      create_new_letter.value[0].tag.splice(index, 1);
+function filterFn(val, update) {
+  update(() => {
+    if (val === '') {
+      filterOptions.value = suggestions
     }
+    else {
+      const needle = val.toLowerCase()
+      filterOptions.value = suggestions.filter(
+        v => v.toLowerCase().indexOf(needle) > -1
+      )
+    }
+  })
+}
+function createValue(val, done) {
 
-// return { onRejected }
+  if (val.length > 0) {
+    const modelValue = (newTag.value || []).slice()
 
+    val
+      .split(/[,;|]+/)
+      .map(v => v.trim())
+      .filter(v => v.length > 0)
+      .forEach(v => {
+        if (suggestions.includes(v) === false) {
+          suggestions.push(v)
+        }
+        if (modelValue.includes(v) === false) {
+          modelValue.push(v)
+        }
+      })
 
+    done(null)
+    newTag.value = modelValue
+  }
+}
 function pasteCapture(event) {
   console.log(event)
 }
@@ -400,7 +411,7 @@ function dropCapture(event) {
 }
 const add_new_letter_diag = ref(false)
 const maximizedToggle = ref(true)
-const newTag = ref("")
+const newTag = ref(null)
 const create_new_letter = ref([
   {
     index: 0,
@@ -410,6 +421,7 @@ const create_new_letter = ref([
     images: ['image1', 'image2', 'image3'],
     created_date: "",
     updated_date: "",
+    new_date: "",
     updated_by: "",
     created_by: ""
   }
@@ -417,6 +429,7 @@ const create_new_letter = ref([
 
 function addNewsLetter() {
   isEditMode.value = false
+  // console.log(newTag.value)
   create_new_letter.value = [
     {
       index: 0,
@@ -426,18 +439,24 @@ function addNewsLetter() {
       images: ['image1', 'image2', 'image3'],
       created_date: "",
       updated_date: "",
+      new_date: "",
       updated_by: "",
       created_by: ""
     }
   ]
+
   console.log(add_new_letter_diag.value)
   add_new_letter_diag.value = true
 }
 
 function editNewsLetter(value) {
+  newTag.value = []
+  newTag.value.push(value.tag)
   create_new_letter.value = value
   isEditMode.value = true
   add_new_letter_diag.value = true
+
+  console.log(newTag)
   console.log(value)
 }
 
@@ -820,15 +839,53 @@ onMounted(() => {
               <div class="column" style="height: 100%">
                 <div>
                   <!-- <q-input outlined dense label="ขื่อ Tag" v-model="newTag" @keyup.enter="addTag"></q-input> -->
-                  <q-select outlined dense label="ชื่อ Tag" v-model="newTag" :options="filteredSuggestions" use-input
-                    use-chips @filter="filterTags" @new-value="addTag" @remove="removeTag" input-debounce="0"></q-select>
+                  <!-- <q-select outlined dense label="ชื่อ Tag" v-model="newTag" :options="filteredSuggestions" use-input
+                    use-chips @filter="filterTags" @new-value="addTag" @remove="removeTag" input-debounce="0"></q-select> -->
+                  <!-- <q-select v-if="newTag" outlined dense label="Suggestions" :options="filteredSuggestions"
+                    option-value="value" option-label="label" @input="newTag = $event" /> -->
+                  <q-select outlined dense label="ขื่อ Tag" v-model="newTag" use-input use-chips multiple
+                    input-debounce="0" @new-value="createValue" :options="filterOptions" @filter="filterFn">
+                    <template v-slot:selected-item="scope">
+                      <q-chip removable dense @remove="scope.removeAtIndex(scope.index)" :tabindex="scope.tabindex"
+                        color="primary" text-color="white" class="q-mt-sm">
+
+                        {{ scope.opt }}
+                      </q-chip>
+                    </template>
+                  </q-select>
                 </div>
-                <div class="q-mt-md">
+                <!-- <div class="q-mt-md">
                   <q-chip square v-for="(tag, index) in create_new_letter[0].tag" :key="index" removable
                     @remove="removeTag(index)" class="q-mr-sm q-mb-sm q-mt-none" color="primary">
                     {{ tag }}
                   </q-chip>
-                </div>
+                </div> -->
+                <q-input class="q-mt-md" outlined dense label="วันเวลาข่าว" v-model="create_new_letter.new_date">
+                  <template v-slot:prepend>
+                    <q-icon name="event" class="cursor-pointer">
+                      <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                        <q-date v-model="create_new_letter.new_date" mask="DD-MM-YYYY HH:mm">
+                          <div class="row items-center justify-end">
+                            <q-btn v-close-popup label="Close" color="primary" flat />
+                          </div>
+                        </q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+
+                  <template v-slot:append>
+                    <q-icon name="access_time" class="cursor-pointer">
+                      <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                        <q-time v-model="create_new_letter.new_date" mask="DD-MM-YYYY HH:mm" format24h>
+                          <div class="row items-center justify-end">
+                            <q-btn v-close-popup label="Close" color="primary" flat />
+                          </div>
+                        </q-time>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+
                 <!-- <div class="col-4  self-center">
                   <q-btn size="xl" push color="green" label="บันทึกข่าว"></q-btn>
                 </div> -->
