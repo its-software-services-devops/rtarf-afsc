@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import type { EssentialLinkProps } from '../components/EssentialLink.vue';
 const route = useRoute()
+const menuInsetLevel = 0.3
 const essentialLinks: EssentialLinkProps[] = [
   {
     title: 'หน้าหลัก',
@@ -16,7 +17,38 @@ const essentialLinks: EssentialLinkProps[] = [
     link: '/dashboard'
   },
 ];
-
+const reportMenu: EssentialLinkProps[] = [
+  {
+    title: 'จำนวนจดหมายข่าว',
+    caption: 'รายงานจำนวนจดหมายข่าวรายวัน',
+    icon: 'library_books',
+    link: '/dashboard/index'
+  },
+  {
+    title: 'จำแนกตามจังหวัด',
+    caption: 'รายงานจดหมายข่าว จำแนกตามจังหวัด',
+    icon: 'library_books',
+    link: '/dashboard/by_province'
+  },
+];
+const splitterModel = ref(50)
+const selected = ref('Food')
+const simple = [
+  {
+    label: 'Relax Hotel',
+    icon: "summarize",
+    children: [
+      {
+        label: 'จำนวนจดหมายข่าว',
+        icon: 'restaurant_menu'
+      },
+      {
+        label: 'แยกตามจังหวัด',
+        icon: 'room_service'
+      },
+    ]
+  }
+]
 
 const leftDrawerOpen = ref(false)
 const initUsername = ref(false)
@@ -128,7 +160,30 @@ onMounted(() => {
         </q-item-label>
 
         <EssentialLink v-for="link in essentialLinks" :key="link.title" v-bind="link" />
+        <!-- <q-expansion-item expand-separator icon="settings_ethernet" label="รายงาน" caption="รายงานจดหมายข่าว"> -->
+        <q-expansion-item :header-inset-level="menuInsetLevel" expand-separator icon="library_books" label="รายงาน"
+          caption="รายงานจดหมายข่าว">
+          <q-card>
+            <MenuRedirect v-for=" link  in  reportMenu " :key="link.title" v-bind="link" />
+          </q-card>
+        </q-expansion-item>
+        <!-- </q-expansion-item> -->
       </q-list>
+      <div>
+        <q-tree :nodes="simple" node-key="label" selected-color="primary" v-model:selected="selected"
+          default-expand-all />
+        <!-- <q-splitter v-model="splitterModel" style="height: 400px">
+
+          <template v-slot:before>
+            <div class="q-pa-md">
+              <q-tree :nodes="simple" node-key="label" selected-color="primary" v-model:selected="selected"
+                default-expand-all />
+            </div>
+          </template>
+
+
+        </q-splitter> -->
+      </div>
     </q-drawer>
 
     <q-page-container>

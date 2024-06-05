@@ -1,1 +1,1 @@
-npm run dev -- --host
+npm run dev -- --host -p 3333

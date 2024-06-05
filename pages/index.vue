@@ -151,6 +151,8 @@ const table_rows = ref([
   },
 
 ])
+
+
 const initialPagination = {
   sortBy: 'desc',
   descending: false,
@@ -161,6 +163,80 @@ const initialPagination = {
 // function clickVisible() {
 //   console.log(visibleColumns.value)
 // }
+
+const suggestions = ref([
+  'อัตโนมัติ',   // automation
+  'นักบินอัตโนมัติ', // autopilot
+  'ยานยนต์',  // automobile
+  'ระบบอัตโนมัติ', // autonomous system
+  'อนุญาต',   // authorize
+  'เครื่องจักร', // machinery
+  'หุ่นยนต์',   // robot
+  'การเขียนโปรแกรม', // programming
+  'การจัดการ', // management
+  'คอมพิวเตอร์', // computer
+  'เทคโนโลยี', // technology
+  'นวัตกรรม', // innovation
+  'ระบบควบคุม', // control system
+  'ระบบสารสนเทศ', // information system
+  'ปัญญาประดิษฐ์', // artificial intelligence
+  'การวิเคราะห์', // analytics
+  'ซอฟต์แวร์', // software
+  'วิศวกรรม', // engineering
+  'อินเทอร์เน็ต', // internet
+  'เครือข่าย', // network
+
+  // Thai Provinces
+  'กรุงเทพมหานคร', // Bangkok
+  'เชียงใหม่', // Chiang Mai
+  'ภูเก็ต', // Phuket
+  'ขอนแก่น', // Khon Kaen
+  'ชลบุรี', // Chonburi
+  'เชียงราย', // Chiang Rai
+  'นครราชสีมา', // Nakhon Ratchasima
+  'นครศรีธรรมราช', // Nakhon Si Thammarat
+  'สงขลา', // Songkhla
+  'สุราษฎร์ธานี', // Surat Thani
+  'ระยอง', // Rayong
+  'ลำปาง', // Lampang
+  'เพชรบุรี', // Phetchaburi
+  'ประจวบคีรีขันธ์', // Prachuap Khiri Khan
+  'อุบลราชธานี', // Ubon Ratchathani
+  'ราชบุรี', // Ratchaburi
+  'พระนครศรีอยุธยา', // Phra Nakhon Si Ayutthaya
+  'สระบุรี', // Saraburi
+  'สกลนคร', // Sakon Nakhon
+  'บุรีรัมย์', // Buriram
+  'ตรัง', // Trang
+  'นราธิวาส', // Narathiwat
+  'ปัตตานี', // Pattani
+  'ยะลา', // Yala
+  'แม่ฮ่องสอน', // Mae Hong Son
+  'นครพนม', // Nakhon Phanom
+  'อุดรธานี', // Udon Thani
+
+  // Tags about News
+  'ข่าวด่วน', // breaking news
+  'การเมือง', // politics
+  'เศรษฐกิจ', // economy
+  'สังคม', // society
+  'บันเทิง', // entertainment
+  'กีฬา', // sports
+  'การศึกษา', // education
+  'เทคโนโลยี', // technology
+  'สุขภาพ', // health
+  'วิทยาศาสตร์', // science
+  'สิ่งแวดล้อม', // environment
+  'อาชญากรรม', // crime
+  'ต่างประเทศ', // international
+  'ท้องถิ่น', // local
+  'ธุรกิจ', // business
+  'การท่องเที่ยว', // tourism
+  'วัฒนธรรม', // culture
+  'ศาสนา', // religion
+  'ประเพณี', // tradition
+])
+const filteredSuggestions = ref([])
 
 const showBottomsheet = () => bottomSheet({
   message: 'Bottom Sheet',
@@ -278,6 +354,40 @@ function onRejected(rejectedEntries) {
     message: `${rejectedEntries.length} file(s) did not pass validation constraints`
   })
 }
+function filterTags(val, update) {
+  if (val === '') {
+    filteredSuggestions.value = suggestions.value;
+    update(() => { });
+    return;
+  }
+
+  const needle = val.toLowerCase();
+  filteredSuggestions.value = suggestions.value.filter(v => v.toLowerCase().indexOf(needle) > -1);
+
+  update(() => { });
+}
+function addTag() {
+  // console.log(newTag.value)
+  // if (newTag.value.trim() !== '') {
+  //   create_new_letter.value[0].tag.push(newTag.value.trim());
+  //   newTag.value = '';
+  // }
+  if (!create_new_letter[0].value.tag.includes(tag)) {
+        create_new_letter[0].value.tag.push(tag);
+      }
+      newTag.value = "";
+}
+
+function removeTag(tag) {
+  // create_new_letter.value[0].tag.splice(index, 1);
+  const index = create_new_letter.value[0].tag.indexOf(tag);
+      if (index !== -1) {
+        create_new_letter[0].value.tag.splice(index, 1);
+      }
+}
+function removeTagFromList(index) {
+      create_new_letter.value[0].tag.splice(index, 1);
+    }
 
 // return { onRejected }
 
@@ -290,12 +400,13 @@ function dropCapture(event) {
 }
 const add_new_letter_diag = ref(false)
 const maximizedToggle = ref(true)
+const newTag = ref("")
 const create_new_letter = ref([
   {
     index: 0,
     title: "",
     paragraph: "",
-    tag: "",
+    tag: [],
     images: ['image1', 'image2', 'image3'],
     created_date: "",
     updated_date: "",
@@ -311,7 +422,7 @@ function addNewsLetter() {
       index: 0,
       title: "",
       paragraph: "",
-      tag: "",
+      tag: [],
       images: ['image1', 'image2', 'image3'],
       created_date: "",
       updated_date: "",
@@ -706,14 +817,24 @@ onMounted(() => {
           <div class="row q-col-gutter-x-md">
 
             <div class="col-6">
-              <div class="column justify-around" style="height: 100%">
-                <div class="col-4 justify-start">
-                  <q-input outlined dense label="ขื่อ Tag" v-model="create_new_letter.tag"></q-input>
+              <div class="column" style="height: 100%">
+                <div>
+                  <!-- <q-input outlined dense label="ขื่อ Tag" v-model="newTag" @keyup.enter="addTag"></q-input> -->
+                  <q-select outlined dense label="ชื่อ Tag" v-model="newTag" :options="filteredSuggestions" use-input
+                    use-chips @filter="filterTags" @new-value="addTag" @remove="removeTag" input-debounce="0"></q-select>
+                </div>
+                <div class="q-mt-md">
+                  <q-chip square v-for="(tag, index) in create_new_letter[0].tag" :key="index" removable
+                    @remove="removeTag(index)" class="q-mr-sm q-mb-sm q-mt-none" color="primary">
+                    {{ tag }}
+                  </q-chip>
                 </div>
                 <!-- <div class="col-4  self-center">
                   <q-btn size="xl" push color="green" label="บันทึกข่าว"></q-btn>
                 </div> -->
+
               </div>
+
 
             </div>
 

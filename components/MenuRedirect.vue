@@ -20,7 +20,7 @@ withDefaults(defineProps<MenuRedirectProps>(), {
 // const redirect = (link) => clearError({ redirect: link })
 </script>
 <template>
-  <q-item :inset-level="0.1" :clickable="clickable" :active="link === $route.path" active-class="bg-primary text-white"
+  <q-item :inset-level="0.5" :clickable="clickable" :active="link === $route.path" active-class="bg-primary text-white"
     target="_blank" :disable="disable" @click="$router.push({ path: link })">
     <q-item-section v-if="icon" avatar>
       <q-icon :name="icon" />
