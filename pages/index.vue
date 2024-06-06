@@ -79,6 +79,8 @@ const excelFile = ref("")
 const isEditMode = ref(false)
 const textEdit = ref('')
 const filter = ref('')
+const filterShow = ref('')
+const search = ref('')
 const dateFilter = ref(null)
 const table_columns = [
   { name: 'index', label: 'ลำดับที่', align: 'center', field: 'index', sortable: true, headerStyle: 'width: 3px' },
@@ -449,6 +451,48 @@ function addNewsLetter() {
   add_new_letter_diag.value = true
 }
 
+function filterByTag(data, tag) {
+  return data.filter(item => item.tag === tag);
+}
+
+function filterByTagSubstring(data, substring) {
+  return data.filter(item => item.tag.includes(substring));
+}
+
+function customFilter(rows, terms) {
+  console.log('custe')
+  // rows contain the entire data
+  // terms contains whatever you have as filter
+  // console.log('term')
+  // console.log(terms)
+  // console.log('row')
+  // console.log(rows)
+
+
+
+  if (terms.includes("ในประเทศ")) {
+    // filter.value = "นอกประเทศ"
+    let filteredData = filterByTag(rows, "ภายนอกประเทศ");
+    return filteredData;
+  } else {
+    let filteredData = filterByTagSubstring(rows, terms);
+    // console.log(filteredData);
+    return filteredData
+  }
+
+}
+
+// function filter() {
+//   return {
+//     search: search.value,
+//     // breakfast: this.filterToggle.breakfast,
+//     // lunch: this.filterToggle.lunch,
+//     // dinner: this.filterToggle.dinner,
+//   }
+// }
+
+
+
 function editNewsLetter(value) {
   newTag.value = []
   newTag.value.push(value.tag)
@@ -525,6 +569,9 @@ function truncateString(value: string) {
   }
 }
 
+function overrideFilter() {
+  console.log('asdf')
+}
 
 
 
@@ -554,9 +601,9 @@ onMounted(() => {
           :columns="table_columns" row-key="name" />
       </div> -->
 
-      <q-table auto-width style="height: 75vh;" :filter="filter" class="my-sticky-header-table" flat bordered
-        title="ข้อมูลจดหมายข่าว" :rows="table_rows" :columns="table_columns" row-key="name" wrap-cells
-        no-data-label="ไม่พบข้อมูลที่ท่านค้นหา" separator="cell">
+      <q-table auto-width style="height: 75vh;" :filter="search" :filter-method="customFilter"
+        class="my-sticky-header-table" flat bordered title="ข้อมูลจดหมายข่าว" :rows="table_rows" :columns="table_columns"
+        row-key="name" wrap-cells no-data-label="ไม่พบข้อมูลที่ท่านค้นหา" separator="cell">
         <template v-slot:top-right>
 
           <q-file outlined dense v-model="excelFile" label="อัพโหลดจดหมายข่าว" style="min-width: 100px"
@@ -576,7 +623,7 @@ onMounted(() => {
         </template>
         <template v-slot:top-left>
 
-          <q-input label="ค้นหา" outlined style="width: 30vw;" dense debounce="300" color="white" v-model="filter">
+          <q-input label="ค้นหา" outlined style="width: 30vw;" dense debounce="300" color="white" v-model="search">
             <template v-slot:append>
               <q-icon name="search" color="white" />
             </template>
