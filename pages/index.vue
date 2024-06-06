@@ -470,9 +470,9 @@ function customFilter(rows, terms) {
 
 
 
-  if (terms.includes("ในประเทศ")) {
+  if (terms.includes("ต่างประเทศ")) {
     // filter.value = "นอกประเทศ"
-    let filteredData = filterByTag(rows, "ภายนอกประเทศ");
+    let filteredData = filterByTag(rows, "นอกประเทศ");
     return filteredData;
   } else {
     let filteredData = filterByTagSubstring(rows, terms);
