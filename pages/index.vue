@@ -455,42 +455,35 @@ function filterByTag(data, tag) {
   return data.filter(item => item.tag === tag);
 }
 
-function filterByTagSubstring(data, substring) {
+function filterByTagSubstring(data, substring, substring2 = null) {
+
+  if (substring2 != null) {
+    // console.log(substring2)
+    return data.filter(item => item.tag.includes(substring) || item.tag.includes(substring2));
+  }
   return data.filter(item => item.tag.includes(substring));
+
+
 }
 
 function customFilter(rows, terms) {
-  console.log('custe')
-  // rows contain the entire data
-  // terms contains whatever you have as filter
-  // console.log('term')
-  // console.log(terms)
-  // console.log('row')
-  // console.log(rows)
 
 
 
   if (terms.includes("ต่างประเทศ")) {
     // filter.value = "นอกประเทศ"
-    let filteredData = filterByTag(rows, "นอกประเทศ");
-    return filteredData;
-  } else {
-    let filteredData = filterByTagSubstring(rows, terms);
-    // console.log(filteredData);
+    let filteredData = filterByTagSubstring(rows, terms, "นอกประเทศ")
+    console.log(filteredData)
     return filteredData
+    // return filteredData;
   }
+  let filteredData = filterByTagSubstring(rows, terms)
+  console.log(filteredData)
+  return filteredData
+
+
 
 }
-
-// function filter() {
-//   return {
-//     search: search.value,
-//     // breakfast: this.filterToggle.breakfast,
-//     // lunch: this.filterToggle.lunch,
-//     // dinner: this.filterToggle.dinner,
-//   }
-// }
-
 
 
 function editNewsLetter(value) {
